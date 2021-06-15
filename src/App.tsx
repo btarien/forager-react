@@ -1,19 +1,26 @@
 import { ThemeProvider } from "@material-ui/core";
-import React, { lazy } from "react";
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Navbar from "./Navbar";
 import theme from "./theme";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
 
 const Profile = lazy(() => import("./Profile"));
+const QRScanner = lazy(() => import("./QRScanner"));
+const Favorites = lazy(() => import("./Favorites"));
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Navbar />
       <BrowserRouter>
-        <Switch>
-          <Route path="/profile" component={Profile} />
-        </Switch>
+        <Suspense fallback="loading...">
+          <Navbar />
+          <Switch>
+            <Route path="/profile" component={Profile} />
+            <Route path="/search" component={QRScanner} />
+            <Route path="/favorites" component={Favorites} />
+            <Redirect to="/search" />
+          </Switch>
+        </Suspense>
       </BrowserRouter>
     </ThemeProvider>
   );

@@ -1,12 +1,20 @@
 import { AppBar, Tab, Tabs } from "@material-ui/core";
 import { Favorite, Person, Search } from "@material-ui/icons";
 import React from "react";
+import { useHistory } from "react-router-dom";
 
-function Navbar() {
+enum TABS {
+  SEARCH = "search",
+  PROFILE = "profile",
+  FAVORITES = "favorites",
+}
+
+const Navbar = () => {
   const [currentTab, setCurrentTab] = React.useState(0);
+  let history = useHistory();
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setCurrentTab(newValue);
-    // globalThis.updateHistory("/profile");
+    history.push(`/${newValue}`);
   };
   return (
     <AppBar position="static" color="transparent">
@@ -18,12 +26,12 @@ function Navbar() {
         textColor="primary"
         indicatorColor="primary"
       >
-        <Tab icon={<Search />} value={0} />
-        <Tab icon={<Favorite />} value={1} />
-        <Tab icon={<Person />} value={2} />
+        <Tab icon={<Search />} value={TABS.SEARCH} />
+        <Tab icon={<Favorite />} value={TABS.FAVORITES} />
+        <Tab icon={<Person />} value={TABS.PROFILE} />
       </Tabs>
     </AppBar>
   );
-}
+};
 
 export default Navbar;
